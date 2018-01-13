@@ -15,7 +15,7 @@ const app = express();
 app.use(function(req, res, next){
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", "GET, HEAD, POST, PUT,PATCH, DELETE, OPTIONS");
-    res.header("Access-Control-Allow-Headers","Authorization, Origin, X-Requested-With,X-HTTP-Method-Override, Content-Type,Accept");
+    res.header("Access-Control-Allow-Headers", "Authorization, Origin, X-Requested-With, Content-Type, Accept");
     next();
 })
 
@@ -67,6 +67,10 @@ passport.use("auth", new BearerStrategy((token, done)=>{
         }
     });
 }));
+
+app.post("/api/validatetoken", passport.authenticate("auth", {session:false}), (req,res)=>{
+    res.send(req.user);
+})
 
 // app.post("/data", passport.authenticate("auth", {session :false}), (req, res)=>{
 //     // res.send("berhasil")

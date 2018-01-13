@@ -6,11 +6,11 @@ const router = express.Router();
 
 module.exports = function (passport) {
 
-    router.use(passport.authenticate("auth", {session :false}), (req, res, next)=>{
-        next();
-    })
+    // router.use(passport.authenticate("auth", {session :false}), (req, res, next)=>{
+    //     next();
+    // })
 
-    router.get("/", (req, res) => {
+    router.get("/",passport.authenticate("auth", {session :false}), (req, res) => {
 
         employeedb.find({}, (error, result) => {
             if (error) {
@@ -22,7 +22,7 @@ module.exports = function (passport) {
         });
     });
     
-    router.get("/:id", (req, res) => {
+    router.get("/:id",passport.authenticate("auth", {session :false}), (req, res) => {
     
         employeedb.findById(req.params.id, (error, result) => {
             if (error) {
@@ -34,7 +34,7 @@ module.exports = function (passport) {
         })
     });
     
-    router.post("/", (req, res) => {
+    router.post("/",passport.authenticate("auth", {session :false}), (req, res) => {
     
         if (!req.files.profilePict) {
             return res.status(400).send("No files were uploaded");
@@ -68,7 +68,7 @@ module.exports = function (passport) {
         });
     });
     
-    router.delete("/:id", (req, res) => {
+    router.delete("/:id",passport.authenticate("auth", {session :false}), (req, res) => {
     
         employeedb.findByIdAndRemove(req.params.id, (error) => {
             if (error) {
@@ -79,7 +79,7 @@ module.exports = function (passport) {
         })
     });
     
-    router.put("/", (req, res) => {
+    router.put("/",passport.authenticate("auth", {session :false}), (req, res) => {
     
         let newObj = {
             name: req.body.name,
